@@ -1,0 +1,349 @@
+create database EMPRESA_NBF 
+
+use EMPRESA_NBF 
+
+ 
+
+CREATE TABLE USUARIO ( 
+
+    Id_usuario INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(60), 
+
+    Email NVARCHAR(100), 
+
+    Contraseña NVARCHAR(30), 
+
+    Rol NVARCHAR(15), 
+
+    Telefono NVARCHAR(10) 
+
+); 
+
+ 
+
+CREATE TABLE CLIENTE ( 
+
+    Id_cliente INT PRIMARY KEY, 
+
+    direccion NVARCHAR(255), 
+
+    tipo NVARCHAR(15), 
+
+    Id_usuario INT, 
+
+    FOREIGN KEY (Id_usuario) REFERENCES USUARIO(Id_usuario) 
+
+); 
+
+ 
+
+CREATE TABLE ADMINISTRADOR ( 
+
+    Id_admin INT PRIMARY KEY, 
+
+    Id_usuario INT, 
+
+    FOREIGN KEY (Id_usuario) REFERENCES USUARIO(Id_usuario) 
+
+); 
+
+ 
+
+CREATE TABLE PROVEEDOR ( 
+
+    Id_proveedor INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100), 
+
+    Telefono NVARCHAR(10), 
+
+    Tiempo_entrega smallint 
+
+); 
+
+ 
+
+CREATE TABLE MARCA ( 
+
+    Id_marca INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100) 
+
+); 
+
+ 
+
+CREATE TABLE CATEGORIA ( 
+
+    Id_categoria INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100) 
+
+); 
+
+ 
+
+CREATE TABLE PEDIDO ( 
+
+    Id_pedido INT PRIMARY KEY, 
+
+    Fecha_recepcion DATE, 
+
+    Estado NVARCHAR(20), 
+
+    Direccion NVARCHAR(255), 
+
+    Id_cliente INT, 
+
+    FOREIGN KEY (Id_cliente) REFERENCES CLIENTE(Id_cliente) 
+
+ ); 
+
+ 
+
+CREATE TABLE COTIZACION ( 
+
+    Id_cotizacion INT PRIMARY KEY, 
+
+    Fecha_recepcion DATE, 
+
+    Estado NVARCHAR(20), 
+
+    Direccion NVARCHAR(255), 
+
+    Id_cliente INT, 
+
+    FOREIGN KEY (Id_cliente) REFERENCES CLIENTE(Id_cliente) 
+
+); 
+
+ 
+
+CREATE TABLE PRODUCTO ( 
+
+    Codigo INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100), 
+
+    Descripcion NVARCHAR(MAX), 
+
+    PrecioxMayor DECIMAL(10, 2), 
+
+    PrecioxMenor DECIMAL(10, 2), 
+
+    Id_marca INT, 
+
+    Id_Categoria INT, 
+
+    FOREIGN KEY (Id_marca) REFERENCES MARCA(Id_marca), 
+
+    FOREIGN KEY (Id_Categoria) REFERENCES CATEGORIA(Id_categoria) 
+
+); 
+
+ 
+
+CREATE TABLE DETALLE_PEDIDO ( 
+
+    Id_detallePedido INT PRIMARY KEY, 
+
+    Precio_unitario DECIMAL(10, 2), 
+
+    Cantidad INT, 
+
+    Subtotal DECIMAL(10, 2), 
+
+    Id_pedido INT, 
+
+    Codigo_producto INT, 
+
+    FOREIGN KEY (Id_pedido) REFERENCES PEDIDO(Id_pedido), 
+
+    FOREIGN KEY (Codigo_producto) REFERENCES PRODUCTO(Codigo) 
+
+); 
+
+ 
+
+CREATE TABLE DETALLE_COTIZACION ( 
+
+    Id_detalleCotizacion INT PRIMARY KEY, 
+
+    Precio_unitario DECIMAL(10, 2), 
+
+    Cantidad INT, 
+
+    Subtotal DECIMAL(10, 2), 
+
+    Id_cotizacion INT, 
+
+    Codigo_producto INT, 
+
+    FOREIGN KEY (Id_cotizacion) REFERENCES COTIZACION(Id_cotizacion), 
+
+    FOREIGN KEY (Codigo_producto) REFERENCES PRODUCTO(Codigo) 
+
+); 
+
+ 
+
+CREATE TABLE CATALOGO ( 
+
+    Id_catalogo INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100), 
+
+    Fecha DATE, 
+
+    Estado NVARCHAR(20) 
+
+); 
+
+ 
+
+CREATE TABLE PRODUCTO_CATALOGO ( 
+
+    Id_catalogo INT, 
+
+    Codigo_producto INT, 
+
+    PRIMARY KEY (Id_catalogo, Codigo_producto), 
+
+    FOREIGN KEY (Id_catalogo) REFERENCES CATALOGO(Id_catalogo), 
+
+    FOREIGN KEY (Codigo_producto) REFERENCES PRODUCTO(Codigo) 
+
+); 
+
+ 
+
+CREATE TABLE SUCURSAL ( 
+
+    Id_sucursal INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100), 
+
+    Direccion NVARCHAR(255), 
+
+    Telefono NVARCHAR(10) 
+
+); 
+
+ 
+
+CREATE TABLE INVENTARIO ( 
+
+    Id_inventario INT PRIMARY KEY, 
+
+    Ubicacion NVARCHAR(255), 
+
+    Id_sucursal INT, 
+
+    FOREIGN KEY (Id_sucursal) REFERENCES SUCURSAL(Id_sucursal) 
+
+); 
+
+ 
+
+CREATE TABLE INVENTARIO_PRODUCTO ( 
+
+    Id_inventario INT, 
+
+    Codigo_producto INT, 
+
+    Cantidad INT, 
+
+    PRIMARY KEY (Id_inventario, Codigo_producto), 
+
+    FOREIGN KEY (Id_inventario) REFERENCES INVENTARIO(Id_inventario), 
+
+    FOREIGN KEY (Codigo_producto) REFERENCES PRODUCTO(Codigo) 
+
+); 
+
+ 
+
+CREATE TABLE METODO_PAGO ( 
+
+    Id_metodo INT PRIMARY KEY, 
+
+    Nombre NVARCHAR(100), 
+
+    Detalle NVARCHAR(MAX) 
+
+); 
+
+ 
+
+CREATE TABLE NOTA_VENTA ( 
+
+    Id_venta INT PRIMARY KEY, 
+
+    Fecha DATE, 
+
+    Monto_total DECIMAL(10, 2), 
+
+    Tipo NVARCHAR(30), 
+
+    Id_referencia INT, 
+
+    Id_admin INT, 
+
+    Id_metodo INT, 
+
+    FOREIGN KEY (Id_admin) REFERENCES ADMINISTRADOR(Id_admin), 
+
+    FOREIGN KEY (Id_metodo) REFERENCES METODO_PAGO(Id_metodo) 
+
+); 
+
+ 
+
+CREATE TABLE SUMINISTRO ( 
+
+    Id_inventario INT, 
+
+    Id_proveedor INT, 
+
+    Codigo_producto INT, 
+
+    Cantidad INT, 
+
+    Precio_total DECIMAL(10, 2), 
+
+    Fecha DATE, 
+
+    PRIMARY KEY (Id_inventario, Id_proveedor, Codigo_producto), 
+
+    FOREIGN KEY (Id_inventario) REFERENCES INVENTARIO(Id_inventario), 
+
+    FOREIGN KEY (Id_proveedor) REFERENCES PROVEEDOR(Id_proveedor), 
+
+    FOREIGN KEY (Codigo_producto) REFERENCES PRODUCTO(Codigo) 
+
+); 
+
+ 
+
+CREATE TABLE BITACORA ( 
+
+    Id_bitacora INT PRIMARY KEY, 
+
+    Accion NVARCHAR(255), 
+
+    ip_usuario NVARCHAR(50), 
+
+    Fecha date, 
+
+Hora time, 
+
+    Detalles NVARCHAR(255), 
+
+    Tabla_asociada NVARCHAR(50), 
+
+    Id_usuario INT, 
+
+    FOREIGN KEY (Id_usuario) REFERENCES USUARIO(Id_usuario) 
+
+); 
