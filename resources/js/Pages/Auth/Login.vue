@@ -19,6 +19,9 @@ const form = useForm({
     remember: false,
 });
 
+//19/10
+const role = sessionStorage.getItem('role')
+
 const submit = () => {
     form.transform(data => ({
         ...data,
@@ -86,8 +89,7 @@ const submit = () => {
                 </PrimaryButton>
             </div>
 
-            <!-- Enlace para registrarse (AÑADIDO) -->
-            <div class="flex items-center justify-center mt-4">
+            <div v-if="role == 'cliente'" class="flex items-center justify-center mt-4">
                 <span class="text-sm text-gray-600">¿No tienes una cuenta?</span>
                 <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 ms-1 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Regístrate aquí

@@ -1,50 +1,20 @@
 <?php
 
+use App\Http\Controllers\AlmacenController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductoController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-//lleva al login
+//19/10
 Route::get('/', function () {
-    return redirect()->route('login'); // Redirige al login cuando visiten la raíz
+    return Inertia::render('RoleSelection');
 });
-
-// Ruta para la selección de tipo de cuenta
-Route::get('/select-account', function () {
-    return Inertia::render('SelectAccountType');
-})->name('select-account');
-
-// Rutas para el login de Admin y Cliente
-Route::get('/login/admin', function () {
-    return Inertia::render('Auth/AdminLogin'); // Vista para Admin
-})->middleware('guest')->name('login.admin');
-
-Route::get('/login/client', function () {
-    return Inertia::render('Auth/CLientLogin'); // Vista para Cliente
-})->middleware('guest')->name('login.client');
-
-
-/*Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});*/
-
 
 // Rutas para la recuperación de contraseñas
 Route::get('forgot-password', function () {
@@ -61,13 +31,42 @@ Route::get('reset-password/{token}', function ($token) {
 // Ruta para actualizar la contraseña
 Route::post('reset-password', [\Laravel\Fortify\Http\Controllers\NewPasswordController::class, '__invoke'])->middleware('guest')->name('password.update');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+// Rutas para gestionar roles y usuarios
+Route::get('/users', [RoleController::class, 'index'])->middleware('auth')->name('users');
+Route::post('/users', [RoleController::class, 'store'])->middleware('auth');
+Route::put('/users/{id_usuario}', [RoleController::class, 'update'])->middleware('auth');
+Route::delete('/users/{id_usuario}', [RoleController::class, 'destroy'])->middleware('auth');
+Route::post('/audit/report', [RoleController::class, 'generateReport'])->middleware('auth');
+
+// Rutas para gestionar el almacen
+Route::get('/almacenes', [AlmacenController::class, 'index'])->name('almacenes.index');
+Route::get('/almacenes/create', [AlmacenController::class, 'create'])->name('almacenes.create');
+Route::post('/almacenes', [AlmacenController::class, 'store'])->name('almacenes.store');
+Route::get('/almacenes/{id}/edit', [AlmacenController::class, 'edit'])->name('almacenes.edit');
+Route::put('/almacenes/{id}', [AlmacenController::class, 'update'])->name('almacenes.update');
+Route::delete('/almacenes/{id}', [AlmacenController::class, 'destroy'])->name('almacenes.destroy');
+
+//Rutas para gestionar inventario
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario.index');
+    Route::get('/inventario/create', [InventarioController::class, 'create'])->name('inventario.create');
+    Route::post('/inventario/store', [InventarioController::class, 'store'])->name('inventario.store');
+});
+
+//Rutas para gestionar productos
+Route::middleware('auth')->group(function () {
+    Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/productos/{codigo}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/productos/{codigo}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/productos/{codigo}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+ });
+
+
+// Ruta opcional para dashboard genérico si no hay diferenciación de roles
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
-

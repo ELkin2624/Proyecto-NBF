@@ -19,7 +19,6 @@ const form = useForm({
 
 const submit = () => {
     // Validar que el teléfono tenga 8 dígitos
-    /*añadi esto */
     if (!/^\d{8}$/.test(form.telefono)) {
         form.errors.telefono = "El teléfono debe tener exactamente 8 dígitos.";
         return;
