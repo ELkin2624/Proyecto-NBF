@@ -82,6 +82,17 @@ class InventarioController extends Controller
     // Método para generar reportes de inventario
     public function reportes()
     {
-        // Lógica para generar reportes
+    $inventarios = InventarioProducto::with(['producto', 'inventario'])->get();
+
+    $reporteData = $inventarios->map(function ($inventarioProducto) {
+        return [
+            'producto' => $inventarioProducto->producto->nombre,
+            'ubicacion' => $inventarioProducto->inventario->ubicacion,
+            'cantidad' => $inventarioProducto->cantidad,
+            'precio_total' => $inventarioProducto->precio_total,
+        ];
+    });
+
+    return response()->json($reporteData);
     }
 }

@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
 
-class RoleController extends Controller
+class UsuarioController extends Controller
 {
     public function index() {
         $users = User::all();
-        return Inertia::render('Index', [
+        return Inertia::render('AdministrarUsuario/Index', [
             'users' => $users,
             'auditLogs' => [],
         ]);

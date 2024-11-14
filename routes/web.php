@@ -1,13 +1,14 @@
 <?php
-
-use App\Http\Controllers\AlmacenController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\NotaCompraController;
 
 
 //19/10
@@ -31,11 +32,11 @@ Route::get('reset-password/{token}', function ($token) {
 Route::post('reset-password', [\Laravel\Fortify\Http\Controllers\NewPasswordController::class, '__invoke'])->middleware('guest')->name('password.update');
 
 // Rutas para gestionar roles y usuarios
-Route::get('/users', [RoleController::class, 'index'])->middleware('auth')->name('users');
-Route::post('/users', [RoleController::class, 'store'])->middleware('auth');
-Route::put('/users/{id_usuario}', [RoleController::class, 'update'])->middleware('auth');
-Route::delete('/users/{id_usuario}', [RoleController::class, 'destroy'])->middleware('auth');
-Route::post('/audit/report', [RoleController::class, 'generateReport'])->middleware('auth');
+Route::get('/users', [UsuarioController::class, 'index'])->middleware('auth')->name('users');
+Route::post('/users', [UsuarioController::class, 'store'])->middleware('auth');
+Route::put('/users/{id_usuario}', [UsuarioController::class, 'update'])->middleware('auth');
+Route::delete('/users/{id_usuario}', [UsuarioController::class, 'destroy'])->middleware('auth');
+Route::post('/audit/report', [UsuarioController::class, 'generateReport'])->middleware('auth');
 
 // Rutas para gestionar el almacen
 Route::get('/almacenes', [AlmacenController::class, 'index'])->name('almacenes.index');
@@ -61,6 +62,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/productos/{codigo}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/productos/{codigo}', [ProductoController::class, 'destroy'])->name('productos.destroy');
  });
+
+ //Rutas para reportes
+ Route::get('/reportes/inventario', function () {
+    return Inertia::render('Reportes/ReporteInv');
+})->name('reportes.inventario.view');
+
+// Rutas para gestión de proveedores
+Route::get('/proveedores', [ProveedorController::class, 'index'])->name('proveedores.index'); // Listado de proveedores
+Route::post('/proveedores', [ProveedorController::class, 'store'])->name('proveedores.store'); // Crear nuevo proveedor
+Route::put('/proveedores/{id}', [ProveedorController::class, 'update'])->name('proveedores.update'); // Actualizar proveedor
+Route::delete('/proveedores/{id}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy'); // Eliminar proveedor
+
+//Rutas para gestion de nota de compra
+Route::get('/nota-compra', [NotaCompraController::class, 'index'])->name('nota-compra.index');
+Route::get('/nota-compra/create', [NotaCompraController::class, 'create'])->name('nota-compra.create');
+Route::post('/nota-compra', [NotaCompraController::class, 'store'])->name('nota-compra.store');
 
 
 // Ruta opcional para dashboard genérico si no hay diferenciación de roles

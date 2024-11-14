@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Marca;
@@ -48,10 +49,23 @@ class ProductoController extends Controller
             'precioxmenor' => 'required|numeric',
             'id_marca' => 'required|exists:marca,id_marca',
             'id_categoria' => 'required|exists:categoria,id_categoria',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Crear producto
-        Producto::create($request->all());
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('productos', 'public');  // Guardar la imagen en la carpeta 'productos'
+        }
+
+        Producto::create([
+            'codigo' => $request->codigo,
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'precioxmayor' => $request->precioxmayor,
+            'precioxmenor' => $request->precioxmenor,
+            'id_marca' => $request->id_marca,
+            'id_categoria' => $request->id_categoria,
+            'imagen_url' => $imagePath ?? null,  // Guardar la ruta de la imagen
+        ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado con éxito.');
     }
@@ -73,17 +87,38 @@ class ProductoController extends Controller
     {
         // Validar datos
         $validatedData = $request->validate([
+            'codigo' => 'required|string',
             'nombre' => 'required|max:100',
-            'descripcion' => 'required',
+            'descripcion' => 'nullable|string',
             'precioxmayor' => 'required|numeric',
             'precioxmenor' => 'required|numeric',
             'id_marca' => 'required|exists:marca,id_marca',
             'id_categoria' => 'required|exists:categoria,id_categoria',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Actualizar producto
+        // Obtener el producto por su codigo
         $producto = Producto::findOrFail($codigo);
-        $producto->update($validatedData);
+
+        if ($request->hasFile('imagen')) {
+            if ($producto->imagen_url) {
+                Storage::delete('public/' . $producto->imagen_url);
+            }
+            $path = $request->file('imagen')->store('productos', 'public');
+        } else {
+            $path = $producto->imagen_url;
+        }
+
+        $producto->update([
+            'codigo' => $request->codigo,
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'precioxmayor' => $request->precioxmayor,
+            'precioxmenor' => $request->precioxmenor,
+            'id_marca' => $request->id_marca,
+            'id_categoria' => $request->id_categoria,
+            'imagen_url' => $path
+        ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
     }

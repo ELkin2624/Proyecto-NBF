@@ -23,12 +23,6 @@ class Inventario extends Model
         return $this->belongsTo(Sucursal::class, 'id_sucursal');
     }
 
-    // Relación con la tabla InventarioProducto (Relación muchos a muchos con productos)
-   /* public function productos()
-    {
-        return $this->belongsToMany(Producto::class, 'inventario_producto', 'id_inventario', 'codigo_producto')
-                    ->withPivot('cantidad'); // Incluimos la columna 'cantidad' en la relación pivot
-    }*/
     public function inventarioProductos()
     {
         return $this->hasMany(InventarioProducto::class, 'id_inventario');
