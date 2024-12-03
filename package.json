@@ -21,6 +21,7 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/inertia-vue3": "^0.6.0",
+<<<<<<< HEAD
         "body-parser": "^1.20.3",
         "chart.js": "^3.9.1",
         "chat.js": "^1.0.2",
@@ -32,6 +33,12 @@
         "lodash": "^4.17.21",
         "lucide-vue-next": "^0.461.0",
         "pg": "^8.13.1",
+=======
+        "chart.js": "^3.9.1",
+        "chat.js": "^1.0.2",
+        "jspdf": "^2.5.2",
+        "jspdf-autotable": "^3.8.4",
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         "vue-chart-3": "^3.1.8",
         "vue-router": "^4.4.5"
     }

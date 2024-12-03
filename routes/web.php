@@ -76,11 +76,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/productos/{codigo}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/productos/{codigo}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
+<<<<<<< HEAD
     // Rutas para gestión de proveedores
     Route::get('/proveedores', [ProveedorController::class, 'index'])->name('proveedores.index'); // Listado de proveedores
     Route::post('/proveedores', [ProveedorController::class, 'store'])->name('proveedores.store'); // Crear nuevo proveedor
     Route::put('/proveedores/{id}', [ProveedorController::class, 'update'])->name('proveedores.update'); // Actualizar proveedor
     Route::delete('/proveedores/{id}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy'); // Eliminar proveedor
+=======
+ //Rutas para reportes
+ Route::get('/reportes/inventario', function () {
+    return Inertia::render('Reportes/ReporteInv');
+})->name('reportes.inventario.view');
+
+// Rutas para gestión de proveedores
+Route::get('/proveedores', [ProveedorController::class, 'index'])->name('proveedores.index'); // Listado de proveedores
+Route::post('/proveedores', [ProveedorController::class, 'store'])->name('proveedores.store'); // Crear nuevo proveedor
+Route::put('/proveedores/{id}', [ProveedorController::class, 'update'])->name('proveedores.update'); // Actualizar proveedor
+Route::delete('/proveedores/{id}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy'); // Eliminar proveedor
+
+//Rutas para gestion de nota de compra
+Route::get('/nota-compra', [NotaCompraController::class, 'index'])->name('nota-compra.index');
+Route::get('/nota-compra/create', [NotaCompraController::class, 'create'])->name('nota-compra.create');
+Route::post('/nota-compra', [NotaCompraController::class, 'store'])->name('nota-compra.store');
+
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 
     // Gestión de notas de compra
     Route::resource('/notas-compra', NotaCompraController::class)->except(['show']);

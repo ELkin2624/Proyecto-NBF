@@ -10,8 +10,11 @@ import axios from 'axios';
 const openDropdown = ref(null);
 const isHamburgerMenuOpen = ref(false);
 const isMobileView = ref(false);
+<<<<<<< HEAD
 
 const alertas = ref([]); // Array para las alertas
+=======
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 
 function toggleDropdown(menu) {
     openDropdown.value = openDropdown.value === menu ? null : menu;
@@ -44,6 +47,7 @@ function handleClickOutside(event) {
     }
 }
 
+<<<<<<< HEAD
 // Función para obtener alertas del servidor
 async function fetchAlertas() {
     try {
@@ -54,11 +58,16 @@ async function fetchAlertas() {
     }
 }
 
+=======
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 onMounted(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
     document.addEventListener('click', handleClickOutside);
+<<<<<<< HEAD
     fetchAlertas(); // Cargar alertas al montar el componente
+=======
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 });
 
 onBeforeUnmount(() => {
@@ -70,7 +79,10 @@ onBeforeUnmount(() => {
 
 <template>
     <AppLayout title="Dashboard">
+<<<<<<< HEAD
         <!-- Botón del menú en vista móvil -->
+=======
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         <button
             v-if="isMobileView"
             @click="toggleHamburgerMenu"
@@ -80,6 +92,7 @@ onBeforeUnmount(() => {
             <i v-else class="bx bx-x text-3xl"></i>
         </button>
 
+<<<<<<< HEAD
         <!-- Menú lateral -->
         <aside
             v-if="!isMobileView || isHamburgerMenuOpen"
@@ -146,6 +159,60 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </aside>
+=======
+        <nav
+            v-if="!isMobileView || isHamburgerMenuOpen"
+            class="bg-white p-4 rounded-lg shadow-md w-full sm:w-auto mt-2 sm:mt-0"
+        >
+            <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
+                <li class="relative dropdown" @click.stop="toggleDropdown('inventario')">
+                    <span class="hover:text-indigo-600 cursor-pointer font-semibold transition duration-150">Inventario</span>
+                    <ul
+                        v-if="openDropdown === 'inventario'"
+                        class="absolute bg-white rounded-lg shadow-lg z-10 mt-2 w-48"
+                    >
+                        <li><a href="/inventario" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Inventario</a></li>
+                        <li><a href="/productos" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Producto</a></li>
+                        <li><a href="/reportes/inventario" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Reporte de inventario</a></li>
+                        <li><a href="/almacenes" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Almacén</a></li>
+                    </ul>
+                </li>
+
+                <li class="relative dropdown" @click.stop="toggleDropdown('ventas')">
+                    <span class="hover:text-indigo-600 cursor-pointer font-semibold transition duration-150">Ventas</span>
+                    <ul
+                        v-if="openDropdown === 'ventas'"
+                        class="absolute bg-white rounded-lg shadow-lg z-10 mt-2 w-48"
+                    >
+                        <li><a href="/notas-venta" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Nota de Venta</a></li>
+                    </ul>
+                </li>
+
+                <li class="relative dropdown" @click.stop="toggleDropdown('compras')">
+                    <span class="hover:text-indigo-600 cursor-pointer font-semibold transition duration-150">Compras</span>
+                    <ul
+                        v-if="openDropdown === 'compras'"
+                        class="absolute bg-white rounded-lg shadow-lg z-10 mt-2 w-48"
+                    >
+                        <li><a href="/nota-compra" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Nota de Compra</a></li>
+                    </ul>
+                </li>
+
+                <li class="relative dropdown" @click.stop="toggleDropdown('admin')">
+                    <span class="hover:text-indigo-600 cursor-pointer font-semibold transition duration-150">Administrador de Usuario</span>
+                    <ul
+                        v-if="openDropdown === 'admin'"
+                        class="absolute bg-white rounded-lg shadow-lg z-10 mt-2 w-48"
+                    >
+                        <li><a href="/proveedores" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Proveedor</a></li>
+                        <li><a href="/bitacora" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Visualizar Bitácora</a></li>
+                        <li><a href="/users" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Usuario</a></li>
+                        <li><a href="/reservas" class="block px-4 py-2 hover:bg-indigo-100 transition duration-150">Gestionar Fecha de Reserva</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 
         <div class="content-wrapper" style="margin-left: 250px; padding-top: 10px;">
             <!-- Componente de alertas -->
@@ -166,6 +233,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+<<<<<<< HEAD
 .menu-title {
     color: #FFD700;
     font-size: 30px;
@@ -245,4 +313,7 @@ onBeforeUnmount(() => {
         width: 100%;
     }
 }
+=======
+
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 </style>

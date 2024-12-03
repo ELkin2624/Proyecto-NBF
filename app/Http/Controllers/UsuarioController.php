@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
+<<<<<<< HEAD
+=======
+use App\Models\Bitacora;
+>>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 use App\Http\Controllers\BitacoraController; 
 
 class UsuarioController extends Controller
