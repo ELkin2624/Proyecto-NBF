@@ -95,6 +95,17 @@
                     </div>
                 </div>
 
+                <!-- Campo para imagen -->
+                <div>
+                    <label for="imagen" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
+                    <input
+                        type="file"
+                        @change="handleFileUpload"
+                        id="imagen"
+                        class="w-full border border-gray-300 rounded-lg p-3"
+                    />
+                </div>
+
                 <div class="flex justify-end items-center space-x-4 sm:space-y-0 sm:space-x-4">
                     <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-600 text-white rounded-lg px-6 py-2 transition duration-200 shadow-lg">
                         Guardar Producto
@@ -126,13 +137,34 @@ export default {
                 precioxmayor: '',
                 precioxmenor: '',
                 id_marca: '',
-                id_categoria: ''
+                id_categoria: '',
+                imagen: null,
             }
         };
     },
     methods: {
+        // Método para manejar el archivo de la imagen
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.producto.imagen = file;
+            }
+        },
+
         submitForm() {
-            Inertia.post('/productos', this.producto, {
+            const formData = new FormData();
+            formData.append('codigo', this.producto.codigo);
+            formData.append('nombre', this.producto.nombre);
+            formData.append('descripcion', this.producto.descripcion);
+            formData.append('precioxmayor', this.producto.precioxmayor);
+            formData.append('precioxmenor', this.producto.precioxmenor);
+            formData.append('id_marca', this.producto.id_marca);
+            formData.append('id_categoria', this.producto.id_categoria);
+            if (this.producto.imagen) {
+                formData.append('imagen', this.producto.imagen);  // Agregar la imagen
+            }
+
+            Inertia.post('/productos', formData, {
                 onSuccess: () => {
                     this.$inertia.visit('/productos'); // Redireccionar al listado de productos
                 }

@@ -13,6 +13,8 @@ class Cliente extends Authenticatable
     protected $primaryKey = 'id_cliente';
     public $incrementing = true;
     protected $keyType = 'int';
+    public $timestamps = false;
+
 
     protected $fillable = [
         'direccion',
@@ -22,5 +24,15 @@ class Cliente extends Authenticatable
 
     public function usuario(){
         return $this->belongsTo(User::class, 'id_usuario');
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'id_cliente');
+    }
+
+    public function cotizaciones()
+    {
+        return $this->hasMany(Cotizacion::class, 'id_cliente');
     }
 }

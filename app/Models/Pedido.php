@@ -9,6 +9,10 @@ class Pedido extends Model
 {
     use HasFactory;
     protected $table = 'pedido';
+    protected $primaryKey = 'id_pedido';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
         'fecha_recepcion',

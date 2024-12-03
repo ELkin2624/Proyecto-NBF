@@ -14,8 +14,12 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     telefono: '',
+    direccion: '',
     terms: false,
+    role: '',
 });
+
+form.role = sessionStorage.getItem('role');
 
 const submit = () => {
     // Validar que el teléfono tenga 8 dígitos
@@ -40,7 +44,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Nombre" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -54,7 +58,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Correo electrónico" />
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -67,7 +71,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Contraseña" />
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -80,7 +84,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="Confirmar contraseña" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -107,6 +111,19 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.telefono" />
             </div>
 
+            <div class="mt-4">
+                <InputLabel for="direccion" value="Dirección" />
+                <TextInput
+                    id="direccion"
+                    v-model="form.direccion"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="address-line1"
+                    maxlength="255"
+                />
+                <InputError class="mt-2" :message="form.errors.direccion" />
+            </div>
 
             <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
                 <InputLabel for="terms">
@@ -121,13 +138,13 @@ const submit = () => {
                 </InputLabel>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Already registered?
+            <div class="flex items-center justify-between mt-4">
+                <Link :href="route('login')" class="text-sm text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Ya está registrado?
                 </Link>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                <PrimaryButton class="px-4 py-2 text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 transition duration-150 ease-in-out" :class="{ 'opacity-50 cursor-not-allowed': form.processing }" :disabled="form.processing">
+                    Registrar
                 </PrimaryButton>
             </div>
         </form>

@@ -26,4 +26,10 @@ class Proveedor extends Model
     {
         return $this->hasMany(Suministro::class, 'id_proveedor');
     }
+
+    // Relación con las notas de compra
+    public function notasCompra()
+    {
+        return $this->hasMany(NotaCompra::class, 'id_proveedor');
+    }
 }

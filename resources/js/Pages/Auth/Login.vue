@@ -40,18 +40,18 @@ const submit = () => {
             <AuthenticationCardLogo />
         </template>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+        <div v-if="status" class="mb-4 font-semibold text-sm text-green-600 text-center">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="space-y-3">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" class="text-gray-700 font-medium" />
                 <TextInput
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                     autofocus
                     autocomplete="username"
@@ -60,42 +60,41 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Password" class="text-gray-700 font-medium" />
                 <TextInput
                     id="password"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                     autocomplete="current-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
+            <div class="flex items-center justify-between">
+                <label class="flex items-center text-gray-600 text-sm">
+                    <Checkbox v-model:checked="form.remember" name="remember" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="ml-2">Recuérdame</span>
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 me-auto">
+            <div class="flex items-center justify-between mt-4">
+                <Link v-if="canResetPassword" :href="route('password.request')" class="text-sm text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     ¿Olvidaste tu contraseña?
                 </Link>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                <PrimaryButton class="px-4 py-2 text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 transition duration-150 ease-in-out" :class="{ 'opacity-50 cursor-not-allowed': form.processing }" :disabled="form.processing">
+                    Iniciar sesión
                 </PrimaryButton>
             </div>
 
-            <div v-if="role == 'cliente'" class="flex items-center justify-center mt-4">
+            <div v-if="role == 'cliente'" class="flex items-center justify-center mt-6 text-gray-600 text-sm">
                 <span class="text-sm text-gray-600">¿No tienes una cuenta?</span>
-                <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 ms-1 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <Link :href="route('register')" class="ml-1 text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Regístrate aquí
                 </Link>
             </div>
-
         </form>
     </AuthenticationCard>
 </template>

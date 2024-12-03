@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DetalleCotizacion extends Model
 {
     use HasFactory;
-    protected $table = 'DETALLE_COTIZACION';
+    protected $table = 'detalle_cotizacion';
+
+    protected $primaryKey = 'id_detallecotizacion';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
         'precio_unitario',
@@ -25,6 +30,6 @@ class DetalleCotizacion extends Model
 
     public function producto()
     {
-        return $this->belongsTo(Producto::class, 'codigo_producto');
+        return $this->belongsTo(Producto::class, 'codigo_producto', 'codigo');
     }
 }

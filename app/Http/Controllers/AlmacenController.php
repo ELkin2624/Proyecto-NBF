@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Sucursal;
 use App\Models\Inventario;
-
+use App\Models\Bitacora;
+use App\Http\Controllers\BitacoraController;
 
 class AlmacenController extends Controller
 {
@@ -34,7 +35,14 @@ class AlmacenController extends Controller
         ]);
 
         // Crear el nuevo inventario
-        Inventario::create($validated);
+        $inventario = Inventario::create($validated);
+        
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'INSERTAR ALMACÉN',
+            'detalles' => 'Se ha creado un nuevo inventario en ubicación: ' . $inventario->ubicacion,
+            'tabla_asociada' => 'inventarios',
+        ]);
 
         // Redirigir al listado de inventarios
         return redirect()->route('almacenes.index')->with('success', 'Almacen creado exitosamente.');
@@ -63,6 +71,13 @@ class AlmacenController extends Controller
         $inventario = Inventario::findOrFail($id);
         $inventario->update($validated);
 
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'ACTUALIZAR ALMACÉN',
+            'detalles' => 'Se ha actualizado el inventario en ubicación: ' . $inventario->ubicacion,
+            'tabla_asociada' => 'inventarios',
+        ]);
+
         // Redirigir al listado de inventarios
         return redirect()->route('almacenes.index')->with('success', 'Almacen actualizado exitosamente.');
     }
@@ -70,9 +85,20 @@ class AlmacenController extends Controller
     public function destroy($id) {
         // Buscar el inventario y eliminarlo
         $inventario = Inventario::findOrFail($id);
+        $ubicacion = $inventario->ubicacion; // Guardar la ubicación antes de eliminar
+
+        // Eliminar el inventario
         $inventario->delete();
+
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'ELIMINAR ALMACÉN',
+            'detalles' => 'Se ha eliminado el inventario en ubicación: ' . $ubicacion,
+            'tabla_asociada' => 'inventarios',
+        ]);
 
         // Redirigir al listado de inventarios
         return redirect()->route('almacenes.index')->with('success', 'Almacen eliminado exitosamente.');
     }
+    
 }

@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class MetodoPago extends Model
 {
     use HasFactory;
-    protected $table = 'METODO_PAGO';
+    protected $table = 'metodo_pago';
 
+    protected $primaryKey = 'id_metodo';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
     protected $fillable = [
         'nombre',
         'detalle',

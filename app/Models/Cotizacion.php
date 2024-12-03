@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cotizacion extends Model
 {
     use HasFactory;
-    protected $table = 'COTIZACION';
+    protected $table = 'cotizacion';
+
+    protected $primaryKey = 'id_cotizacion';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
         'fecha_recepcion',

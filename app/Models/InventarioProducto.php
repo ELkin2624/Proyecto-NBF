@@ -13,7 +13,11 @@ class InventarioProducto extends Model
     public $timestamps = false; // No usa las columnas created_at/updated_at
     public $incrementing = false; // Indica que no tiene una clave autoincremental
     protected $primaryKey = null;
-    protected $fillable = ['id_inventario', 'codigo_producto', 'cantidad'];
+    protected $fillable = ['
+        id_inventario',
+        'codigo_producto',
+        'cantidad'
+    ];
 
     public static function incrementCantidad($id_inventario, $codigo_producto, $cantidad)
     {
@@ -27,7 +31,7 @@ class InventarioProducto extends Model
     {
         return $this->belongsTo(Inventario::class, 'id_inventario');
     }
-    
+
     // Relación con Producto
     public function producto()
     {

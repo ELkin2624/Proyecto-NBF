@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Bitacora;
+use App\Http\Controllers\BitacoraController; 
 
 class RoleController extends Controller
 {
@@ -12,7 +14,7 @@ class RoleController extends Controller
         $users = User::all();
         return Inertia::render('Index', [
             'users' => $users,
-            'auditLogs' => [],
+            'auditLogs' => [], // Aquí puedes cargar los registros de la bitácora si lo deseas
         ]);
     }
 
@@ -33,6 +35,13 @@ class RoleController extends Controller
         $user->password = bcrypt('password');
         $user->save();
 
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'CREAR USUARIO',
+            'detalles' => 'Se ha creado un nuevo usuario: ' . $user->name . ' con correo: ' . $user->email,
+            'tabla_asociada' => 'users',
+        ]);
+
         return redirect()->route('users')->with('success', 'Usuario creado correctamente.');
     }
 
@@ -52,13 +61,29 @@ class RoleController extends Controller
         $user->rol = $request->rol;
         $user->save();
 
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'ACTUALIZAR USUARIO',
+            'detalles' => 'Se ha actualizado la información del usuario: ' . $user->name,
+            'tabla_asociada' => 'users',
+        ]);
+
         return redirect()->route('users')->with('success', 'Usuario actualizado correctamente.');
     }
 
     // Eliminar un usuario
     public function destroy($id_usuario) {
         $user = User::findOrFail($id_usuario);
+        $userName = $user->name; // Guardar el nombre del usuario antes de eliminar
+
         $user->delete();
+
+        // Registrar la acción en la bitácora
+        app(BitacoraController::class)->registrarAccion([
+            'accion' => 'ELIMINAR USUARIO',
+            'detalles' => 'Se ha eliminado al usuario: ' . $userName,
+            'tabla_asociada' => 'users',
+        ]);
 
         return redirect()->route('users')->with('success', 'Usuario eliminado correctamente.');
     }

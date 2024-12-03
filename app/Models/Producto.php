@@ -9,9 +9,8 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $table = 'producto'; // Nombre correcto de la tabla
-    protected $primaryKey = 'codigo'; // Clave primaria es 'codigo', no 'id'
-
+    protected $table = 'producto';
+    protected $primaryKey = 'codigo';
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
@@ -24,7 +23,8 @@ class Producto extends Model
         'precioxmayor',
         'precioxmenor',
         'id_marca',
-        'id_categoria'
+        'id_categoria',
+        'imagen_url'
     ];
 
     // Relación con la tabla Marca
@@ -38,11 +38,6 @@ class Producto extends Model
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');
     }
-
-    /*public function inventarios() {
-        return $this->belongsToMany(Inventario::class, 'inventario_producto', 'codigo_producto', 'id_inventario')
-            ->withPivot('cantidad'); // Incluimos la columna 'cantidad' en la relación pivot
-    }*/
 
     public function detallePedido()
     {
@@ -62,5 +57,11 @@ class Producto extends Model
     public function suministros()
     {
         return $this->hasMany(Suministro::class, 'codigo_producto');
+    }
+
+    // Relación con los detalles de las notas de compra
+    public function detallesCompra()
+    {
+        return $this->hasMany(DetalleNotaCompra::class, 'codigo_producto');
     }
 }

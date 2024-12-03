@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BitacoraController;
+ 
 
 class ProfileController extends Controller
 {
@@ -32,6 +34,13 @@ class ProfileController extends Controller
             'name' => $request->name,
             'email' => $request->email,
         ]);*/
+         // Registrar la acción de actualización en la bitácora
+         app(BitacoraController::class)->registrarAccion([
+            'accion' => 'ACTUALIZAR PERFIL',
+            'detalles' => 'El usuario con ID: ' . $user->id . ' ha actualizado su perfil.',
+            'tabla_asociada' => 'usuario',
+        ]);
+
 
         return redirect()->route('profile.show')->with('success', 'Perfil actualizado correctamente.');
     }

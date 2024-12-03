@@ -13,22 +13,15 @@ class Inventario extends Model
     protected $primaryKey = 'id_inventario';
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $fillable = ['ubicacion', 'id_sucursal'];
-
-    // Desactivar timestamps
     public $timestamps = false;
+    
+    protected $fillable = ['ubicacion', 'id_sucursal'];
 
     public function sucursal()
     {
         return $this->belongsTo(Sucursal::class, 'id_sucursal');
     }
 
-    // Relación con la tabla InventarioProducto (Relación muchos a muchos con productos)
-   /* public function productos()
-    {
-        return $this->belongsToMany(Producto::class, 'inventario_producto', 'id_inventario', 'codigo_producto')
-                    ->withPivot('cantidad'); // Incluimos la columna 'cantidad' en la relación pivot
-    }*/
     public function inventarioProductos()
     {
         return $this->hasMany(InventarioProducto::class, 'id_inventario');

@@ -13,6 +13,7 @@
         <!-- Otros estilos -->
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+        <script src="https://js.stripe.com/v3/"></script>
 
         <!-- Scripts -->
         @routes
