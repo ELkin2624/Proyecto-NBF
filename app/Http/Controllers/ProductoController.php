@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
-<<<<<<< HEAD
 use Illuminate\Validation\Rule;
-=======
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Marca;
@@ -119,20 +116,12 @@ class ProductoController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-<<<<<<< HEAD
         $path = null;
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('productos', 'public');
         }
 
         $producto = Producto::create([
-=======
-        if ($request->hasFile('imagen')) {
-            $imagePath = $request->file('imagen')->store('productos', 'public');  // Guardar la imagen en la carpeta 'productos'
-        }
-
-        Producto::create([
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
             'codigo' => $request->codigo,
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
@@ -140,7 +129,6 @@ class ProductoController extends Controller
             'precioxmenor' => $request->precioxmenor,
             'id_marca' => $request->id_marca,
             'id_categoria' => $request->id_categoria,
-<<<<<<< HEAD
             'imagen_url' => $path,
         ]);
 
@@ -149,9 +137,6 @@ class ProductoController extends Controller
             'accion' => 'INSERTAR PRODUCTO',
             'detalles' => 'Se ha insertado un nuevo producto: ' . $producto->nombre,
             'tabla_asociada' => 'producto',
-=======
-            'imagen_url' => $imagePath ?? null,  // Guardar la ruta de la imagen
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado con éxito.');
@@ -172,7 +157,6 @@ class ProductoController extends Controller
 
     public function update(Request $request, $codigo)
     {
-<<<<<<< HEAD
         $producto = Producto::where('codigo', $codigo)->firstOrFail();
 
         $request->validate([
@@ -181,11 +165,6 @@ class ProductoController extends Controller
                 'string',
                 Rule::unique('producto', 'codigo')->ignore($producto->codigo, 'codigo'),
             ],
-=======
-        // Validar datos
-        $validatedData = $request->validate([
-            'codigo' => 'required|string',
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
             'nombre' => 'required|max:100',
             'descripcion' => 'nullable|string',
             'precioxmayor' => 'required|numeric',
@@ -195,23 +174,16 @@ class ProductoController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-<<<<<<< HEAD
-=======
         // Obtener el producto por su codigo
         $producto = Producto::findOrFail($codigo);
 
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         if ($request->hasFile('imagen')) {
             if ($producto->imagen_url) {
                 Storage::delete('public/' . $producto->imagen_url);
             }
             $path = $request->file('imagen')->store('productos', 'public');
-<<<<<<< HEAD
-            $producto->imagen_url = $path;
-=======
         } else {
             $path = $producto->imagen_url;
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         }
 
         $producto->update([
@@ -222,17 +194,7 @@ class ProductoController extends Controller
             'precioxmenor' => $request->precioxmenor,
             'id_marca' => $request->id_marca,
             'id_categoria' => $request->id_categoria,
-<<<<<<< HEAD
-        ]);
-
-        // Registro en bitácora
-        app(BitacoraController::class)->registrarAccion([
-            'accion' => 'ACTUALIZAR PRODUCTO',
-            'detalles' => "Se actualizó el producto: {$producto->nombre}",
-            'tabla_asociada' => 'producto',
-=======
             'imagen_url' => $path
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');

@@ -3,26 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade as Pdf;
 
 use App\Models\User;
-=======
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 use App\Models\NotaCompra;
 use App\Models\DetalleNotaCompra;
 use App\Models\Proveedor;
 use App\Models\Producto;
-<<<<<<< HEAD
 use App\Models\HistorialNotaCompra;
 use App\Models\Bitacora;
 use App\Http\Controllers\BitacoraController;
 
-=======
-use App\Models\User;
-use Inertia\Inertia;
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
 
 class NotaCompraController extends Controller
 {
@@ -43,11 +35,7 @@ class NotaCompraController extends Controller
     {
         $proveedores = Proveedor::all();
         $productos = Producto::all();
-<<<<<<< HEAD
         return Inertia::render('Compras/NotaCompraCreate', [
-=======
-        return Inertia::render('Compras/NotaCompraForm', [
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
             'proveedores' => $proveedores,
             'productos' => $productos
         ]);
@@ -55,27 +43,12 @@ class NotaCompraController extends Controller
 
     public function store(Request $request)
     {
-<<<<<<< HEAD
-=======
-        $validated = $request->validate([
-            'id_proveedor' => 'required|exists:proveedor,id_proveedor',
-            'fecha_orden' => 'required|date',
-            'total' => 'required|numeric',
-            'productos' => 'required|array',
-            'productos.*.codigo_producto' => 'required|string',
-            'productos.*.cantidad' => 'required|numeric|min:1',
-            'productos.*.precio_unitario' => 'required|numeric',
-            'productos.*.subtotal' => 'required|numeric',
-        ]);
-
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
         $proveedor = Proveedor::findOrFail($request->id_proveedor);
         $tiempoEntregaMeses = $proveedor->tiempo_entrega;
 
         $fechaOrden = now();
         $fechaEntrega = $fechaOrden->copy()->addMonths($tiempoEntregaMeses);
 
-<<<<<<< HEAD
         $notaCompra = new NotaCompra();
         $notaCompra->id_proveedor = $request->id_proveedor;
         $notaCompra->fecha_orden = $request->fecha_orden;
@@ -345,39 +318,3 @@ class NotaCompraController extends Controller
     }
 }
 
-=======
-        $notaCompra = NotaCompra::create([
-            'id_proveedor' => $request->id_proveedor,
-            'fecha_orden' => $request->fecha_orden,
-            'fecha_entrega' => $fechaEntrega,
-            'estado' => 'En espera',
-            'id_admin' => auth()->user()->id,
-            'total' => $request->total,
-        ]);
-
-        foreach ($request->productos as $producto) {
-            DetalleNotaCompra::create([
-                'id_nota_compra' => $notaCompra->id_nota_compra,
-                'codigo_producto' => $producto['codigo_producto'],
-                'cantidad' => $producto['cantidad'],
-                'precio_unitario' => $producto['precio_unitario'],
-                'subtotal' => $producto['subtotal'],
-            ]);
-        }
-
-        return Inertia::render('Compras/NotaCompraIndex', [
-            'success' => true,
-            'message' => 'Nota de compra creada correctamente.'
-        ]);
-    }
-
-    public function actualizarEstado(Request $request, $id)
-    {
-        $notaCompra = NotaCompra::findOrFail($id);
-        $notaCompra->estado = $request->estado;
-        $notaCompra->save();
-
-        return redirect()->route('nota-compra.index');
-    }
-}
->>>>>>> 6cf30f3e27725b61240137af4a843b2a842836f5
